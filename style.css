@@ -4,21 +4,25 @@ body {
 
 .container {
     width: 100%;
-
+    display: flex;
+    align-items: center;
+    height: 100vh;
 }
 
 .slides {
     position: relative;
-    width: 700px;
-    height: 450px;
+    width: 600px;
+    height: 400px;
     margin: 0 auto;
-    overflow: hidden;
+    /*overflow: hidden;*/
+}
+.slides__container{
+    position: relative;
 }
 
 .slides__slide {
-
     position: absolute;
-    width: 700px;
+    width: 600px;
     object-fit: contain;
     left: 0;
     top: 0;
@@ -41,13 +45,15 @@ body {
     left: 10px;
     transform: translateY(-50%) rotate(180deg);
 }
+
 .slider__dots {
     position: absolute;
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
 }
-.slider__dots-item{
+
+.slider__dots-item {
     width: 20px;
     height: 20px;
     background-color: transparent;
@@ -55,7 +61,8 @@ body {
     border-radius: 50%;
     cursor: pointer;
 }
-.slider__dots-item + .slider__dots-item{
+
+.slider__dots-item + .slider__dots-item {
     margin-left: 5px;
 }
 
