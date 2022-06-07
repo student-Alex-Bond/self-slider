@@ -3,7 +3,6 @@ const buttonRight = document.querySelector('.arrow_right')
 const slides = document.querySelectorAll('.slides__slide')
 const dots = document.querySelectorAll('.slider__dots-item')
 const widthSlide = document.querySelector('.slides__container').clientWidth;
-//const dots_container = document.querySelector('.slider__dots')
 let sliderSrcImg = []
 slides.forEach((item, index) => {
 	sliderSrcImg.push(item.src)
@@ -18,19 +17,35 @@ function templateImg(img, position) {
 	return `<img class="slides__slide" src="${img}" style="left: ${position + 'px'}">`
 }
 
+function renderDots() {
+	let length = sliderSrcImg.length
+	const insertDots = Array.from({length}, (v, k) =>
+		`<button class="slider__dots-item" data-id="${k}"></button>`)
+	dots.forEach(dot => dot.remove())
+	document.querySelector('.slider__dots').insertAdjacentHTML('afterbegin', insertDots.join(''))
+}
+
+function activeDot(activeIndex) {
+	document.querySelectorAll('.slider__dots-item').forEach(dot => dot.classList.remove('slider__dots-circle--active'))
+	document.querySelectorAll('.slider__dots-item')[activeIndex].classList.add('slider__dots-circle--active')
+
+}
+
 function renderSlides(positionInHTML, arrayImg) {
 	let html = arrayImg.join(' ')
 	document.querySelector('.slides__container').insertAdjacentHTML(positionInHTML, html)
 }
 
 function addImg(index = 0, position = 0) {
-if(index === slides.length){
-	index = 0
-}
+
+	if (index === slides.length) {
+		index = 0
+	}
+
 	arraySlides.push(templateImg(sliderSrcImg[index], position))
 }
 
-function firstRender() {
+function firstRenderSlider() {
 	addImg(countImg, -widthSlide)
 	renderSlides('afterbegin', arraySlides)
 	arraySlides = []
@@ -40,27 +55,15 @@ function firstRender() {
 	addImg(currentIndex + 1, widthSlide)
 	renderSlides('beforeend', arraySlides)
 	arraySlides = []
-
+	activeDot(currentIndex)
+	currentIndex++
 }
 
 function nextImg() {
-	console.log(currentIndex)
-	if(currentIndex === countImg){
-		currentIndex = 0
-	}
-
-	addImg(currentIndex+1, widthSlide)
-	currentIndex++
-	console.log('before: ', currentIndex)
+	addImg(currentIndex + 1, widthSlide)
 }
 
 function previousImg() {
-	console.log(currentIndex)
-	if (currentIndex === 0) {
-		currentIndex = countImg
-	} else {
-		currentIndex--
-	}
 	addImg(currentIndex, -widthSlide)
 }
 
@@ -105,10 +108,19 @@ function animateSlide(button, direction) {
 		if (direction === 'forward') {
 			showSlides[0].remove()
 			renderSlides('beforeend', arraySlides)
+			currentIndex++
+			if (currentIndex === countImg + 1) {
+				currentIndex = 0
+			}
 		}
 		if (direction === 'back') {
 			showSlides[countImg].remove()
 			renderSlides('afterbegin', arraySlides)
+			currentIndex--
+			if (currentIndex === -1) {
+				currentIndex = countImg
+			}
+			console.log(currentIndex)
 		}
 
 		arraySlides = []
@@ -117,14 +129,9 @@ function animateSlide(button, direction) {
 
 }
 
-function activeDot(step) {
-	dots.forEach(dot => dot.classList.remove('slider__dots-circle--active'))
-
-	dots[step].classList.add('slider__dots-circle--active')
-
-}
-
-firstRender()
+renderDots()
+activeDot(currentIndex)
+firstRenderSlider()
 
 
 buttonRight.addEventListener('click', () => {

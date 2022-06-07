@@ -14,7 +14,7 @@ body {
     width: 600px;
     height: 400px;
     margin: 0 auto;
-    /*overflow: hidden;*/
+    overflow: hidden;
 }
 
 .slides__container {
