@@ -11,38 +11,69 @@ slides.forEach((item, index) => {
 })
 // variables
 let currentIndex = 0
-let arrayTwoImg = []
+let arraySlides = []
+const countImg = slides.length - 1
 
 function templateImg(img, position) {
-	return `<img class="slides__slide" src="${img}" style="left:${position}">`
+	return `<img class="slides__slide" src="${img}" style="left: ${position + 'px'}">`
 }
 
-function renderSlides(arrayImg) {
-	let html = arrayImg.map(img => img).join(' ')
-	document.querySelector('.slides__container').insertAdjacentHTML("afterbegin", html)
+function renderSlides(positionInHTML, arrayImg) {
+	let html = arrayImg.join(' ')
+	document.querySelector('.slides__container').insertAdjacentHTML(positionInHTML, html)
 }
 
-function fillArrayImage() {
-	if (arrayTwoImg.length === 0) {
-		for (let i = 0; i < sliderSrcImg.length - 1; i++) {
-			let left = i * widthSlide + 'px'
-			arrayTwoImg.push(templateImg(sliderSrcImg[i], left))
-		}
+function addImg(index = 0, position = 0) {
+if(index === slides.length){
+	index = 0
+}
+	arraySlides.push(templateImg(sliderSrcImg[index], position))
+}
+
+function firstRender() {
+	addImg(countImg, -widthSlide)
+	renderSlides('afterbegin', arraySlides)
+	arraySlides = []
+	addImg(0, '0')
+	renderSlides('beforeend', arraySlides)
+	arraySlides = []
+	addImg(currentIndex + 1, widthSlide)
+	renderSlides('beforeend', arraySlides)
+	arraySlides = []
+
+}
+
+function nextImg() {
+	console.log(currentIndex)
+	if(currentIndex === countImg){
+		currentIndex = 0
 	}
-	renderSlides(arrayTwoImg)
+
+	addImg(currentIndex+1, widthSlide)
+	currentIndex++
+	console.log('before: ', currentIndex)
 }
 
-function changeSlide(direction) {
+function previousImg() {
+	console.log(currentIndex)
+	if (currentIndex === 0) {
+		currentIndex = countImg
+	} else {
+		currentIndex--
+	}
+	addImg(currentIndex, -widthSlide)
+}
+
+function changeSlide(button, direction) {
 
 	if (direction === 'forward') {
-
-
+		nextImg()
 	}
 	if (direction === 'back') {
-
+		previousImg()
 	}
+	animateSlide(button, direction)
 
-	fillArrayImage()
 }
 
 function animateSlide(button, direction) {
@@ -58,27 +89,32 @@ function animateSlide(button, direction) {
 			return;
 		}
 		if (direction === 'forward') {
-			showSlides[0].style.left = -(timePassed) / (timeout / widthSlide) + 'px'
-			showSlides[1].style.left = widthSlide - timePassed / (timeout / widthSlide) + 'px'
+			showSlides[0].style.left = -widthSlide - timePassed / (timeout / widthSlide) + 'px'
+			showSlides[1].style.left = -(timePassed) / (timeout / widthSlide) + 'px'
+			showSlides[2].style.left = widthSlide - timePassed / (timeout / widthSlide) + 'px'
 		}
 		if (direction === 'back') {
-
+			showSlides[0].style.left = -widthSlide + timePassed / (timeout / widthSlide) + 'px'
+			showSlides[1].style.left = (timePassed) / (timeout / widthSlide) + 'px'
+			showSlides[2].style.left = widthSlide + timePassed / (timeout / widthSlide) + 'px'
 		}
-
 
 	}, 10);
+
 	setTimeout(function () {
-		showSlides.forEach(item => item.remove())
 		if (direction === 'forward') {
-			changeSlide(direction)
+			showSlides[0].remove()
+			renderSlides('beforeend', arraySlides)
 		}
 		if (direction === 'back') {
-			changeSlide(direction)
+			showSlides[countImg].remove()
+			renderSlides('afterbegin', arraySlides)
 		}
+
+		arraySlides = []
 		button.disabled = false
-
-
 	}, timeout)
+
 }
 
 function activeDot(step) {
@@ -88,17 +124,14 @@ function activeDot(step) {
 
 }
 
-fillArrayImage()
+firstRender()
 
 
 buttonRight.addEventListener('click', () => {
-	animateSlide(buttonRight, 'forward')
+	changeSlide(buttonRight, 'forward')
 })
 buttonLeft.addEventListener('click', () => {
-	animateSlide(buttonLeft, 'back')
+	changeSlide(buttonLeft, 'back')
 })
 
-// dots_container.addEventListener('click', (event) => {
-// 	changeDots(event)
-// })
 

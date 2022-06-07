@@ -16,7 +16,8 @@ body {
     margin: 0 auto;
     /*overflow: hidden;*/
 }
-.slides__container{
+
+.slides__container {
     position: relative;
 }
 
