@@ -5,9 +5,10 @@ const buttonRight = document.querySelector('.arrow_right')
 const buttonLeft = document.querySelector('.arrow_left')
 //variables
 srcImg = []
-let currentIndex = slides.length - 1
 // fill array tags img
 slides.forEach(item => srcImg.push(item))
+let currentIndex = slides.length - 1
+// if 1 slide
 if(slides.length === 1){
 	let html = srcImg.map( img => `<img class="${img.className}" src="${img.src}" alt=""/>`)
 	sliderContainer.insertAdjacentHTML('afterbegin',html.join(''))
@@ -51,7 +52,7 @@ const animate = (direction) => {
 		let timePassed = Date.now() - start;
 
 		if (timePassed >= 2000) {
-			clearInterval(timer); // finish the animation after 2 seconds
+			clearInterval(timer);
 			return;
 		}
 		if (direction === 'forward') {
@@ -66,7 +67,6 @@ const animate = (direction) => {
 }
 
 const nextSlide = (index = 0) => {
-	//debugger
 	buttonRight.disabled = true
 	let slides = document.querySelectorAll('.slides__slide')
 	slides[index].style.left = '100%'
@@ -85,9 +85,7 @@ const nextSlide = (index = 0) => {
 	}, 2000)
 }
 
-const previousSlide = (index) => {
-
-	console.log(index)
+const previousSlide = () => {
 	buttonLeft.disabled = true
 	let slides = document.querySelectorAll('.slides__slide')
 	slides[slides.length - 2].style.left = '-100%'
