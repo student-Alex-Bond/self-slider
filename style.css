@@ -9,9 +9,9 @@ body {
 
 .slider {
     position: relative;
-    width: 65vw;
+    width: 650px;
     height: 50vh;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 
