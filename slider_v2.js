@@ -51,19 +51,19 @@ const animate = (direction) => {
 
 		let timePassed = Date.now() - start;
 
-		if (timePassed >= 2000) {
+		if (timePassed >= 1000) {
 			clearInterval(timer);
 			return;
 		}
 		if (direction === 'forward') {
-			slides[slides.length - 2].style.left = `${Math.ceil(-(timePassed / 19.8))}%`
-			slides[slides.length - 1].style.left = `${Math.ceil(100 - (timePassed / 19.8))}%`
+			slides[slides.length - 2].style.left = `${Math.ceil(-(timePassed / 10))}%`
+			slides[slides.length - 1].style.left = `${Math.ceil(100 - (timePassed / 10))}%`
 		} else {
-			slides[slides.length - 2].style.left = `${Math.ceil((timePassed / 19.8))}%`
-			slides[slides.length - 1].style.left = `${Math.ceil(-100 + (timePassed / 19.8))}%`
+			slides[slides.length - 2].style.left = `${Math.ceil((timePassed / 10))}%`
+			slides[slides.length - 1].style.left = `${Math.ceil(-100 + (timePassed / 10))}%`
 		}
 
-	}, 20);
+	}, 5);
 }
 
 const nextSlide = (index = 0) => {
@@ -73,7 +73,7 @@ const nextSlide = (index = 0) => {
 	sliderContainer.appendChild(slides[index])
 	animate('forward')
 	let timerID = setTimeout(() => {
-		if (timerID >= 2000) {
+		if (timerID >= 1000) {
 			clearTimeout(timerID)
 			return
 		}
@@ -82,7 +82,7 @@ const nextSlide = (index = 0) => {
 		console.log(currentIndex)
 		buttonRight.disabled = false
 		document.querySelectorAll('.slides__slide').forEach(item => item.style = '')
-	}, 2000)
+	}, 1000)
 }
 
 const previousSlide = () => {
@@ -92,7 +92,7 @@ const previousSlide = () => {
 	sliderContainer.appendChild(slides[slides.length - 2])
 	animate('back')
 	let timerID = setTimeout(() => {
-		if (timerID >= 2000) {
+		if (timerID >= 1000) {
 			clearTimeout(timerID)
 			return
 		}
@@ -105,7 +105,7 @@ const previousSlide = () => {
 		activeDot(currentIndex)
 		buttonLeft.disabled = false
 
-	}, 2000)
+	}, 1000)
 
 }
 
@@ -124,13 +124,13 @@ const showDesiredSlide = (event) => {
 		currentIndex = id
 		activeDot(currentIndex)
 		let timerID = setTimeout(() => {
-			if (timerID >= 2000) {
+			if (timerID >= 1000) {
 				clearTimeout(timerID)
 				return
 			}
 			dots.forEach(dot => dot.disabled = false)
 			document.querySelectorAll('.slides__slide').forEach(item => item.style = '')
-		}, 2000)
+		}, 1000)
 	}
 }
 
